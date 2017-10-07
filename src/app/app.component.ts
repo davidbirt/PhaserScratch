@@ -18,7 +18,12 @@ class Bullet{
 
 class SimpleGame {
   constructor() {
-    this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create, update: this.update, render: this.render });
+    this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { 
+      preload: this.preload, 
+      create: this.create, 
+      update: this.update, 
+      render: this.render, 
+      resetAsteroids : this.resetAsteroids });
     this.bulletInterval = 0;
   }
 
@@ -40,15 +45,35 @@ class SimpleGame {
     this.game.load.image('ship', '../assets/ship.png');
   }
 
+  resetAsteroids() {
+    for (var i=0; i < 30; i++ ) {
+        var side = Math.round(Math.random());
+        var x;
+        var y;
+        
+        if (side) {
+            x = Math.round(Math.random()) * this.game.width;
+            y = Math.random() * this.game.height;
+        } else {
+            x = Math.random() * this.game.width;
+            y = Math.round(Math.random()) * this.game.height;
+        }
+        
+        var asteroid = this.asteroids.create(x, y, 'asteroid');
+        asteroid.anchor.set(0.5, 0.5);
+        asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
+ 
+        var randomAngle = Phaser.Math.degToRad(this.game.rnd.angle());
+        var randomVelocity = this.game.rnd.integerInRange(50, 150);
+        this.game.physics.arcade.velocityFromRotation(randomAngle, randomVelocity, asteroid.body.velocity);
+    }
+  }
+  
   create() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // setup the background
     this.game.add.sprite(0, 0, 'bg');
-
-    // Add asteroids group to the game world.
-    this.asteroids = this.game.add.group();
-    this.asteroids.enableBody = true;
 
     // setup the ship and its physics
     this.ship = new Ship(this.game);
@@ -62,6 +87,12 @@ class SimpleGame {
     this.key_thrust = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
     this.key_reverse = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     this.key_fire = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+     // Add asteroids group to the game world.
+     this.asteroids = this.game.add.group();
+     this.asteroids.enableBody = true;
+     this.asteroids.physicsBodyType = Phaser.Physics.ARCADE;
+     this.resetAsteroids();
   }
 
   update() {
@@ -69,7 +100,9 @@ class SimpleGame {
          this.ship.FireGuns();
     }
     this.ship.render(this.key_left,this.key_right,this.key_thrust,this.key_reverse);
-    this.ship.checkBoundary();
+    
+    // check boundary for the asteroids
+    this.asteroids.forEachExists(this.ship.checkBoundary, this);
   }
 
   render() {

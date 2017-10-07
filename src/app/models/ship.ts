@@ -1,4 +1,5 @@
 /// <reference path="../services/phaser.d.ts" />
+import { GameObject } from './gameEntity';
 
 class ShipSettings {
     startX: number;
@@ -9,10 +10,10 @@ class ShipSettings {
     angularVelocity: number = 200;
 }
 
-export class Ship {
+export class Ship  extends GameObject{
     constructor(game : Phaser.Game) {
+        super(game);
         // so what oes into setting up a ship
-        this.game = game;
         this.instance = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
         this.settings = new ShipSettings();
         this.initShip();
@@ -23,7 +24,6 @@ export class Ship {
 
     /** PROPERTIES */
     instance : Phaser.Sprite;
-    game : Phaser.Game;
     settings : ShipSettings;
     guns : Phaser.Weapon;
     get rotation():number{
@@ -50,24 +50,7 @@ export class Ship {
         } else {
             this.instance.body.acceleration.set(0);
         }
-        this.checkBoundary();
-    }
-
-    /**
-     * calculage the game boundary and ensure the ship is staying inside of it.
-     */
-    checkBoundary() {
-        if (this.instance.x < 0) {
-          this.instance.x = this.game.width;
-        } else if (this.instance.x > this.game.width) {
-          this.instance.x = 0;
-        }
-    
-        if (this.instance.y < 0) {
-          this.instance.y = this.game.height;
-        } else if (this.instance.y > this.game.height) {
-          this.instance.y = 0;
-        }
+        this.checkBoundary(this.instance);
     }
 
     /** Ship setup code */
@@ -83,8 +66,7 @@ export class Ship {
         console.log('calling fire');
         this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
         this.guns.fireRate = 90;
-        this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation);
-        
+        this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation);        
         this.guns.fire();  
     }
       
