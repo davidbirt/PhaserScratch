@@ -1,5 +1,6 @@
 /// <reference path="./services/phaser.d.ts" />
 import { Component } from '@angular/core';
+import { Ship } from './models/ship';
 
 class Bullet{
   constructor(){
@@ -17,12 +18,12 @@ class Bullet{
 
 class SimpleGame {
   constructor() {
-    this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create, update: this.update, render: this.render, checkBoundary : this.checkBoundary });
+    this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create, update: this.update, render: this.render });
     this.bulletInterval = 0;
   }
 
   game: Phaser.Game;
-  ship: Phaser.Sprite;
+  ship: Ship;
   asteroids: Phaser.Group;
   key_left: Phaser.Key;
   key_right: Phaser.Key;
@@ -51,11 +52,7 @@ class SimpleGame {
     this.asteroids.enableBody = true;
 
     // setup the ship and its physics
-    this.ship = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
-    this.ship.anchor.set(0.5, 0.5);
-    this.game.physics.enable(this.ship, Phaser.Physics.ARCADE);
-    this.ship.body.drag.set(100);
-    this.ship.body.maxVelocity.set(300);
+    this.ship = new Ship(this.game);
     
     // need a group for the bullets
     this.bulletGroup = this.game.add.weapon(30,'bullet');
@@ -68,44 +65,15 @@ class SimpleGame {
     this.key_fire = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   }
 
-  checkBoundary() {
-    if (this.ship.x < 0) {
-      this.ship.x = this.game.width;
-    } else if (this.ship.x > this.game.width) {
-      this.ship.x = 0;
-    }
-
-    if (this.ship.y < 0) {
-      this.ship.y = this.game.height;
-    } else if (this.ship.y > this.game.height) {
-      this.ship.y = 0;
-    }
-  }
- 
   update() {
-    var rotation = (this.ship.rotation - (Phaser.Math.PI2 / 4));
-    if (this.key_left.isDown) {
-      this.ship.body.angularVelocity = -200;
-    } else if (this.key_right.isDown) {
-      this.ship.body.angularVelocity = 200;
-    } else {
-      this.ship.body.angularVelocity = 0;
-    }
-    if (this.key_thrust.isDown) {
-      this.game.physics.arcade.accelerationFromRotation(rotation, 300, this.ship.body.acceleration);
-    } else if(this.key_reverse.isDown){
-      this.game.physics.arcade.accelerationFromRotation(-1*rotation, 300, this.ship.body.acceleration);
-    }else if (this.key_fire.isDown){
-      this.key_reverse = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-      this.bulletGroup.fireFrom.setTo(this.ship.x,this.ship.y,1,1);  
-      this.bulletGroup.fireRate = 100;
-      this.bulletGroup.fireAngle = Phaser.Math.radToDeg(rotation);
-      this.bulletGroup.fire();      
-    }
-    else {
-      this.ship.body.acceleration.set(0);
-    }
-    this.checkBoundary();
+    // else if (fire.isDown){
+    //   this.bulletGroup.fireFrom.setTo(this.ship.x,this.ship.y,1,1);  
+    //   this.bulletGroup.fireRate = 100;
+    //   this.bulletGroup.fireAngle = Phaser.Math.radToDeg(rotation);
+    //   this.bulletGroup.fire();      
+    // }
+    this.ship.render(this.key_left,this.key_right,this.key_thrust,this.key_reverse);
+    this.ship.checkBoundary();
   }
 
   render() {
