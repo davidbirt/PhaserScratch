@@ -15,6 +15,7 @@ export class Ship  extends GameObject{
     /** PROPERTIES */
     instance : Phaser.Sprite;
     guns : Phaser.Weapon;
+    lives : number = 3;
     get rotation():number{
         return (this.instance.rotation - (Phaser.Math.PI2 / 4));
     }
@@ -52,11 +53,18 @@ export class Ship  extends GameObject{
 
     /** Init weapon system */
     FireGuns(){
-        console.log('calling fire');
         this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
         this.guns.fireRate = 90;
         this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation);        
         this.guns.fire();  
     }
-      
+
+    DestroyShip(){
+        this.lives--;
+        if(this.lives > 0){
+            this.game.time.events.add(Phaser.Timer.SECOND * this.settings.timeToReset, () => {
+                this.instance.reset(this.game.width /2,this.game.height /2);
+            },this);
+        }
+    }
 }

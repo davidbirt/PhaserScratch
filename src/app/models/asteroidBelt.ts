@@ -33,5 +33,5 @@ export class AsteroidBelt extends GameObject{
             var randomVelocity = this.game.rnd.integerInRange(50, 150);
             this.game.physics.arcade.velocityFromRotation(randomAngle, randomVelocity, asteroid.body.velocity);
         }
-      }
+    }
 }

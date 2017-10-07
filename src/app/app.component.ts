@@ -10,7 +10,8 @@ class SimpleGame {
       preload: this.preload, 
       create: this.create, 
       update: this.update, 
-      render: this.render});
+      render: this.render,
+      collide : this.collide});
   }
 
   game: Phaser.Game;
@@ -22,6 +23,8 @@ class SimpleGame {
   key_reverse: Phaser.Key;
   key_fire : Phaser.Key;
   bulletGroup: Phaser.Weapon;
+  settings : GameSettings;
+  hud: any;
 
   preload() {
     this.game.load.image('bg', '../assets/bg2.jpg');
@@ -34,7 +37,8 @@ class SimpleGame {
 
   create() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
+    this.settings = new GameSettings();
+    
     // setup the background
     this.game.add.sprite(0, 0, 'bg');
 
@@ -54,6 +58,9 @@ class SimpleGame {
      // Add asteroids group to the game world.
      this.asteroids = new AsteroidBelt(this.game);
      this.asteroids.buildAsteroids();
+
+     // Add hud display to the game world.
+     this.hud = this.game.add.text(20,10, this.ship.lives.toString(), this.settings.counterFontStyle);
   }
 
   update() {
@@ -65,12 +72,23 @@ class SimpleGame {
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
 
-    this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, (target, asteroid) =>{ target.kill(); asteroid.kill(); }, null,this);
-    this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, (target, asteroid) =>{ target.kill(); asteroid.kill(); }, null,this);
+    this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, this.collide, null,this);
+    this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null,this);
+  }
+
+  collide(target: any, asteroid : any){
+    target.kill();
+    asteroid.kill();
+
+    if(target.key == 'ship'){
+      this.ship.DestroyShip();
+      this.hud = this.ship.lives;
+    }
   }
 
   render() {
     // this.game.debug.inputInfo(10,20);
+    
   }
 }
 

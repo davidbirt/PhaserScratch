@@ -14,4 +14,10 @@ export class GameSettings {
     drag: number = 100;
     maxVelocity: number = 300;
     angularVelocity: number = 200;
+    startingLives: number = 3;
+    timeToReset:number = 3;
+
+    // Styles
+    counterFontStyle:Phaser.PhaserTextStyle = {font: '40px Arial', fill: '#BC2119', align: 'center'};
+
 }
