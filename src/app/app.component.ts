@@ -1,20 +1,8 @@
 /// <reference path="./services/phaser.d.ts" />
 import { Component } from '@angular/core';
 import { Ship } from './models/ship';
-
-class Bullet{
-  constructor(){
-    this.speed = 400;
-    this.interval = 250;
-    this.lifespan = 2000;
-    this.maxCount = 30;
-
-  }
-  speed:number;
-  interval:number;
-  lifespan:number;
-  maxCount:number;
-}
+import { GameSettings } from './models/gameSettings';
+import { AsteroidBelt } from './models/asteroidBelt';
 
 class SimpleGame {
   constructor() {
@@ -22,53 +10,28 @@ class SimpleGame {
       preload: this.preload, 
       create: this.create, 
       update: this.update, 
-      render: this.render, 
-      resetAsteroids : this.resetAsteroids });
-    this.bulletInterval = 0;
+      render: this.render});
   }
 
   game: Phaser.Game;
   ship: Ship;
-  asteroids: Phaser.Group;
+  asteroids: AsteroidBelt;
   key_left: Phaser.Key;
   key_right: Phaser.Key;
   key_thrust: Phaser.Key;
   key_reverse: Phaser.Key;
   key_fire : Phaser.Key;
   bulletGroup: Phaser.Weapon;
-  bulletInterval:number;
 
   preload() {
     this.game.load.image('bg', '../assets/bg2.jpg');
-    this.game.load.image('asteroid', '../assets/asteroids/ast_med.png');
+    this.game.load.image('asteroidl', '../assets/asteroids/ast_lrg.png');
+    this.game.load.image('asteroidm', '../assets/asteroids/ast_med.png');
+    this.game.load.image('asteroids', '../assets/asteroids/ast_sml.png');
     this.game.load.image('bullet', '../assets/bullets/bullet.png');
     this.game.load.image('ship', '../assets/ship.png');
   }
 
-  resetAsteroids() {
-    for (var i=0; i < 30; i++ ) {
-        var side = Math.round(Math.random());
-        var x;
-        var y;
-        
-        if (side) {
-            x = Math.round(Math.random()) * this.game.width;
-            y = Math.random() * this.game.height;
-        } else {
-            x = Math.random() * this.game.width;
-            y = Math.round(Math.random()) * this.game.height;
-        }
-        
-        var asteroid = this.asteroids.create(x, y, 'asteroid');
-        asteroid.anchor.set(0.5, 0.5);
-        asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
- 
-        var randomAngle = Phaser.Math.degToRad(this.game.rnd.angle());
-        var randomVelocity = this.game.rnd.integerInRange(50, 150);
-        this.game.physics.arcade.velocityFromRotation(randomAngle, randomVelocity, asteroid.body.velocity);
-    }
-  }
-  
   create() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -89,10 +52,8 @@ class SimpleGame {
     this.key_fire = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
      // Add asteroids group to the game world.
-     this.asteroids = this.game.add.group();
-     this.asteroids.enableBody = true;
-     this.asteroids.physicsBodyType = Phaser.Physics.ARCADE;
-     this.resetAsteroids();
+     this.asteroids = new AsteroidBelt(this.game);
+     this.asteroids.buildAsteroids();
   }
 
   update() {
@@ -102,7 +63,10 @@ class SimpleGame {
     this.ship.render(this.key_left,this.key_right,this.key_thrust,this.key_reverse);
     
     // check boundary for the asteroids
-    this.asteroids.forEachExists(this.ship.checkBoundary, this);
+    this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
+
+    this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, (target, asteroid) =>{ target.kill(); asteroid.kill(); }, null,this);
+    this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, (target, asteroid) =>{ target.kill(); asteroid.kill(); }, null,this);
   }
 
   render() {

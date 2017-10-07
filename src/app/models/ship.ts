@@ -1,21 +1,11 @@
 /// <reference path="../services/phaser.d.ts" />
 import { GameObject } from './gameEntity';
 
-class ShipSettings {
-    startX: number;
-    startY: number;
-    acceleration: number = 300;
-    drag: number = 100;
-    maxVelocity: number = 300;
-    angularVelocity: number = 200;
-}
-
 export class Ship  extends GameObject{
     constructor(game : Phaser.Game) {
         super(game);
         // so what oes into setting up a ship
         this.instance = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
-        this.settings = new ShipSettings();
         this.initShip();
 
         // setup the guns
@@ -24,7 +14,6 @@ export class Ship  extends GameObject{
 
     /** PROPERTIES */
     instance : Phaser.Sprite;
-    settings : ShipSettings;
     guns : Phaser.Weapon;
     get rotation():number{
         return (this.instance.rotation - (Phaser.Math.PI2 / 4));

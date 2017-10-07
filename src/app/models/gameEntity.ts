@@ -1,11 +1,15 @@
 /// <reference path="../services/phaser.d.ts" />
+import { GameSettings } from './gameSettings';
 
 export class GameObject{
     constructor(game: Phaser.Game){
         this.game = game;
+        this.settings = new GameSettings();
     }
 
     game: Phaser.Game;
+    settings : GameSettings;
+
     checkBoundary(instance : Phaser.Sprite) {
         if (instance.x < 0) {
           instance.x = this.game.width;
