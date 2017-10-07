@@ -15,34 +15,39 @@ export class Ship {
         this.game = game;
         this.instance = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
         this.settings = new ShipSettings();
+        this.initShip();
     }
 
+    /** PROPERTIES */
     instance : Phaser.Sprite;
     game : Phaser.Game;
     settings : ShipSettings;
 
+    get rotation():number{
+        return (this.instance.rotation - (Phaser.Math.PI2 / 4));
+    }
+
+    /** METHODS */
     /** Called from the game class */
     render(key_left: Phaser.Key, key_right: Phaser.Key, key_thrust: Phaser.Key, key_reverse: Phaser.Key) {
-        if (this.instance.body) {
-            // Rotational movement
-            var rotation = (this.instance.rotation - (Phaser.Math.PI2 / 4));
-            if (key_left.isDown) {
-                this.instance.body.angularVelocity = -200;
-            } else if (key_right.isDown) {
-                this.instance.body.angularVelocity = 200;
-            } else {
-                this.instance.body.angularVelocity = 0;
-            }
-
-            // Thrust and Brake
-            if (key_thrust.isDown) {
-                this.game.physics.arcade.accelerationFromRotation(rotation, 350, this.instance.body.acceleration);
-            } else if (key_reverse.isDown) {
-                this.game.physics.arcade.accelerationFromRotation(-1 * rotation, 400, this.instance.body.acceleration);
-            } else {
-                this.instance.body.acceleration.set(0);
-            }
+        // Rotational movement
+        if (key_left.isDown) {
+            this.instance.body.angularVelocity = -200;
+        } else if (key_right.isDown) {
+            this.instance.body.angularVelocity = 200;
+        } else {
+            this.instance.body.angularVelocity = 0;
         }
+
+        // Thrust and Brake
+        if (key_thrust.isDown) {
+            this.game.physics.arcade.accelerationFromRotation(this.rotation, 350, this.instance.body.acceleration);
+        } else if (key_reverse.isDown) {
+            this.game.physics.arcade.accelerationFromRotation(-1 * this.rotation, 400, this.instance.body.acceleration);
+        } else {
+            this.instance.body.acceleration.set(0);
+        }
+        this.checkBoundary();
     }
 
     /**

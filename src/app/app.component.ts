@@ -36,8 +36,7 @@ class SimpleGame {
   preload() {
     this.game.load.image('bg', '../assets/bg2.jpg');
     this.game.load.image('asteroid', '../assets/asteroids/ast_med.png');
-    // this.game.load.image('logo', '../assets/phaser-logo-small.png');
-    this.game.load.image('bullet', '../assets/bullets/lazer.png');
+    this.game.load.image('bullet', '../assets/bullets/bullet.png');
     this.game.load.image('ship', '../assets/ship.png');
   }
 
@@ -66,12 +65,12 @@ class SimpleGame {
   }
 
   update() {
-    // else if (fire.isDown){
-    //   this.bulletGroup.fireFrom.setTo(this.ship.x,this.ship.y,1,1);  
-    //   this.bulletGroup.fireRate = 100;
-    //   this.bulletGroup.fireAngle = Phaser.Math.radToDeg(rotation);
-    //   this.bulletGroup.fire();      
-    // }
+    if (this.key_fire.isDown){
+      this.bulletGroup.fireFrom.setTo(this.ship.instance.x,this.ship.instance.y,1,1);  
+      this.bulletGroup.fireRate = 100;
+      this.bulletGroup.fireAngle = Phaser.Math.radToDeg(this.ship.rotation);
+      this.bulletGroup.fire();      
+    }
     this.ship.render(this.key_left,this.key_right,this.key_thrust,this.key_reverse);
     this.ship.checkBoundary();
   }
@@ -79,8 +78,6 @@ class SimpleGame {
   render() {
     // this.game.debug.inputInfo(10,20);
   }
-
- 
 }
 
 @Component({
