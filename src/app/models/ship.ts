@@ -16,13 +16,16 @@ export class Ship {
         this.instance = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
         this.settings = new ShipSettings();
         this.initShip();
+
+        // setup the guns
+        this.guns = this.game.add.weapon(50, 'bullet');
     }
 
     /** PROPERTIES */
     instance : Phaser.Sprite;
     game : Phaser.Game;
     settings : ShipSettings;
-
+    guns : Phaser.Weapon;
     get rotation():number{
         return (this.instance.rotation - (Phaser.Math.PI2 / 4));
     }
@@ -73,6 +76,16 @@ export class Ship {
         this.game.physics.enable(this.instance, Phaser.Physics.ARCADE);
         this.instance.body.drag.set(100);
         this.instance.body.maxVelocity.set(300);
+    }
+
+    /** Init weapon system */
+    FireGuns(){
+        console.log('calling fire');
+        this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
+        this.guns.fireRate = 90;
+        this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation);
+        
+        this.guns.fire();  
     }
       
 }

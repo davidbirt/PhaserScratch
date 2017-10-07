@@ -66,10 +66,7 @@ class SimpleGame {
 
   update() {
     if (this.key_fire.isDown){
-      this.bulletGroup.fireFrom.setTo(this.ship.instance.x,this.ship.instance.y,1,1);  
-      this.bulletGroup.fireRate = 100;
-      this.bulletGroup.fireAngle = Phaser.Math.radToDeg(this.ship.rotation);
-      this.bulletGroup.fire();      
+         this.ship.FireGuns();
     }
     this.ship.render(this.key_left,this.key_right,this.key_thrust,this.key_reverse);
     this.ship.checkBoundary();
