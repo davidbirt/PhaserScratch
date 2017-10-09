@@ -24,7 +24,7 @@ class SimpleGame {
   key_fire : Phaser.Key;
   bulletGroup: Phaser.Weapon;
   settings : GameSettings;
-  hud: any;
+  hud: Phaser.Text;
 
   preload() {
     this.game.load.image('bg', '../assets/bg2.jpg');
@@ -82,7 +82,7 @@ class SimpleGame {
 
     if(target.key == 'ship'){
       this.ship.DestroyShip();
-      this.hud = this.ship.lives;
+      this.hud.text = this.ship.lives.toString();
     }
   }
 

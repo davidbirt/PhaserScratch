@@ -3,8 +3,8 @@ export class GameSettings {
     startingAsteroids:number = 4;
     maxAsteroids:number = 20;
     incrementAsteroids:number = 2;
-    asteroidLarge : { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidl' }
-    asteroidMed :   { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidm' }
+    asteroidLarge : { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidl', pieces: 3 }
+    asteroidMed :   { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidm', pieces: 2 }
     asteroidSmall : { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroids' }
 
     // Ship Settings

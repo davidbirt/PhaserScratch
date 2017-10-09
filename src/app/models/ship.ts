@@ -62,6 +62,7 @@ export class Ship  extends GameObject{
     DestroyShip(){
         this.lives--;
         if(this.lives > 0){
+            console.log('decrimenting lives counter');
             this.game.time.events.add(Phaser.Timer.SECOND * this.settings.timeToReset, () => {
                 this.instance.reset(this.game.width /2,this.game.height /2);
             },this);
