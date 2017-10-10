@@ -24,6 +24,7 @@ class SimpleGame {
   key_fire : Phaser.Key;
   key_laser: Phaser.Key;
   key_machineGun: Phaser.Key;
+  key_photon: Phaser.Key;
   bulletGroup: Phaser.Weapon;
   settings : GameSettings;
   hud: Phaser.Text;
@@ -38,6 +39,7 @@ class SimpleGame {
     this.game.load.image('bullet', '../assets/bullets/bullet.png');
     this.game.load.image('ship', '../assets/ship.png');
     this.game.load.image('laser', '../assets/bullets/lazer.png');
+    this.game.load.image('photon', '../assets/bullets/photon.png');
   }
 
   create() {
@@ -64,6 +66,7 @@ class SimpleGame {
     this.key_fire = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.key_machineGun = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
     this.key_laser = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+    this.key_photon = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
     
      // Add asteroids group to the game world.
      this.asteroids = new AsteroidBelt(this.game);
@@ -83,6 +86,9 @@ class SimpleGame {
     }
     if(this.key_laser.isDown) {
       this.ship.ChangeGuns('laser');
+    }
+    if(this.key_photon.isDown) {
+      this.ship.ChangeGuns('photon');
     }
     this.ship.render(this.key_left,this.key_right,this.key_thrust, this.key_reverse);
     

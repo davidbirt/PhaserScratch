@@ -70,6 +70,9 @@ export class Ship  extends GameObject{
             case 'laser':
                 this.guns = this.game.add.weapon(10, 'laser');
                 break;
+            case 'photon':
+                this.guns = this.game.add.weapon(1, 'photon');
+                break;
             default:
                 break;
         }
