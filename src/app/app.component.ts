@@ -90,6 +90,8 @@ class SimpleGame {
     if(target.key == 'ship'){
       this.ship.DestroyShip();
       this.hud.text = this.ship.lives.toString();
+    }else{
+      //if its an asteroid that was destroyed then we need to check and see if its time to level up!
     }
   }
 
