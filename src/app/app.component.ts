@@ -34,7 +34,7 @@ class SimpleGame {
 
 
   preload() {
-    this.game.load.image('bg', '../assets/bg7.jpg');
+    this.game.load.image('bg', '../assets/bg8.jpg');
     this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
     this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
     this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
@@ -77,7 +77,6 @@ class SimpleGame {
      // Add hud display to the game world.
      this.hud = this.game.add.text(20,10, 'Lives: ' + this.ship.lives.toString() + '| AMMO: ' + this.ship.ammoPool.toString(), this.settings.counterFontStyle);
   }
-
 
   update() {
     if (this.key_fire.isDown) {
