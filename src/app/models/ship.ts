@@ -18,6 +18,8 @@ export class Ship  extends GameObject{
     instance : Phaser.Sprite;
     guns : Phaser.Weapon;
     lives : number = 3;
+    invulnerable:boolean = false;
+
     get rotation():number{
         return (this.instance.rotation - (Phaser.Math.PI2 / 4));
     }
@@ -82,10 +84,11 @@ export class Ship  extends GameObject{
     DestroyShip(){
         this.lives--;
         // meed to be impervious to collisions for a cpl seconds/
-
+        this.invulnerable = true;
         if(this.lives > 0){
             this.game.time.events.add(Phaser.Timer.SECOND * this.settings.timeToReset, () => {
                 this.instance.reset(this.game.width /2,this.game.height /2);
+                this.invulnerable = false;
             },this);
         }
     }
