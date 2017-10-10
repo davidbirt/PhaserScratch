@@ -54,6 +54,7 @@ class SimpleGame {
     
     // need a group for the bullets
     this.bulletGroup = this.ship.guns;
+    this.bulletGroup.bulletInheritSpriteSpeed = true;
     
     // setup user input
     this.key_left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
@@ -78,10 +79,10 @@ class SimpleGame {
          this.ship.FireGuns();
     }
     if(this.key_machineGun.isDown) {
-      this.ship.guns = this.game.add.weapon(5, 'bullet');
+      this.ship.ChangeGuns('machineGun');
     }
     if(this.key_laser.isDown) {
-      this.ship.guns = this.game.add.weapon(2, 'laser');
+      this.ship.ChangeGuns('laser');
     }
     this.ship.render(this.key_left,this.key_right,this.key_thrust, this.key_reverse);
     
