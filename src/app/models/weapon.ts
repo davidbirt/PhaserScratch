@@ -2,6 +2,7 @@
 
 export class Gun {
     id: number;
+    ammoCost: number;
     damage: number;
     name: string;
     spriteName: string;
@@ -16,6 +17,7 @@ export class Gun {
 export const GUNS: Gun[] = [
     {
         id: 1,
+        ammoCost: 0,
         damage: 1,
         name: 'machineGun',
         spriteName: 'bullet',
@@ -27,6 +29,7 @@ export const GUNS: Gun[] = [
     },
     {
         id: 2,
+        ammoCost: 1,
         damage: 3, 
         name: 'laser',
         spriteName: 'laser',
@@ -39,6 +42,7 @@ export const GUNS: Gun[] = [
     },
     {
         id: 3,
+        ammoCost: 3,
         damage: 7,
         name: 'photon',
         spriteName: 'photon',

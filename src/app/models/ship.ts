@@ -1,6 +1,7 @@
 /// <reference path="../services/phaser.d.ts" />
 import { GameObject } from './gameEntity';
 import { GUNS } from './weapon';
+import { Gun } from './weapon';
 
 
 export class Ship  extends GameObject{
@@ -11,8 +12,8 @@ export class Ship  extends GameObject{
         this.initShip();
 
         // setup the guns
-        //fire the main guns in 5 round bursts
-        this.guns = this.game.add.weapon(5, 'bullet');
+        this.ChangeGuns(1);
+        this.ammoPool = 200;
         
     }
 
@@ -21,7 +22,8 @@ export class Ship  extends GameObject{
     /** PROPERTIES */
     instance : Phaser.Sprite;
     guns : Phaser.Weapon;
-    weaponDamage: number;
+    weapon: Gun;
+    ammoPool: number;
     lives : number = 3;
     invulnerable:boolean = false;
 
@@ -63,20 +65,21 @@ export class Ship  extends GameObject{
 
     /** Init weapon system */
     FireGuns(){
+        this.ammoPool -= this.weapon.ammoCost;
         this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
         this.guns.fireRate = 90;
         this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation);        
-        this.guns.fire();  
+        if(this.ammoPool > this.weapon.ammoCost || this.weapon.ammoCost === 0) this.guns.fire();  
     }
 
     ChangeGuns(id: number){
         var gunInfo = GUNS.find(e => e.id === id);
+        this.weapon = gunInfo;
         this.guns = this.game.add.weapon(gunInfo.fireRate, gunInfo.spriteName);
         this.guns.bulletCollideWorldBounds = gunInfo.bulletCollideWorldBounds;
         this.guns.bulletKillDistance = gunInfo.bulletKillDistance;
         this.guns.bulletSpeed = gunInfo.bulletSpeed;
         this.guns.bulletAngleVariance = gunInfo.bulletAngleVariance;
-        this.weaponDamage = gunInfo.damage;
     }
 
 

@@ -29,6 +29,7 @@ class SimpleGame {
   bulletGroup: Phaser.Weapon;
   settings : GameSettings;
   hud: Phaser.Text;
+  
   level: number;
 
 
@@ -74,7 +75,7 @@ class SimpleGame {
      this.asteroids.buildAsteroids(this.settings.levels[this.level]);
 
      // Add hud display to the game world.
-     this.hud = this.game.add.text(20,10, this.ship.lives.toString(), this.settings.counterFontStyle);
+     this.hud = this.game.add.text(20,10, 'Lives: ' + this.ship.lives.toString() + '| AMMO: ' + this.ship.ammoPool.toString(), this.settings.counterFontStyle);
   }
 
   update() {
@@ -104,17 +105,16 @@ class SimpleGame {
 
   collide(target: any, asteroid : any){
     target.kill();
+    asteroid.kill();
 
     if(target.key == 'ship'){
       this.ship.DestroyShip();
       this.hud.text = this.ship.lives.toString();
     }else{
       //if its an asteroid that was destroyed then we need to check and see if its time to level up!
-      asteroid.health -= this.ship.weaponDamage;
       // does this asteroid have pieces?
-      // if(asteroid.health <= 0) {
         asteroid.kill();
-      // }
+
       if(this.asteroids.settings[asteroid.key].nextSize)
         // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
         var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
