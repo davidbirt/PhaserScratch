@@ -84,13 +84,13 @@ class SimpleGame {
     }
 
     if(this.key_machineGun.isDown) {
-      this.ship.ChangeGuns('machineGun');
+      this.ship.ChangeGuns(1);
     }
     if(this.key_laser.isDown) {
-      this.ship.ChangeGuns('laser');
+      this.ship.ChangeGuns(2);
     }
     if(this.key_photon.isDown) {
-      this.ship.ChangeGuns('photon');
+      this.ship.ChangeGuns(3);
     }
     this.ship.render(this.key_left, this.key_right, this.key_thrust, this.key_reverse);
 

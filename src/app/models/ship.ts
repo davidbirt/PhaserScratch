@@ -1,5 +1,7 @@
 /// <reference path="../services/phaser.d.ts" />
 import { GameObject } from './gameEntity';
+import { GUNS } from './weapon';
+
 
 export class Ship  extends GameObject{
     constructor(game : Phaser.Game) {
@@ -13,6 +15,8 @@ export class Ship  extends GameObject{
         this.guns = this.game.add.weapon(5, 'bullet');
         
     }
+
+    
 
     /** PROPERTIES */
     instance : Phaser.Sprite;
@@ -62,21 +66,13 @@ export class Ship  extends GameObject{
         this.guns.fire();  
     }
 
-    ChangeGuns(weapon: string){
-        switch (weapon) {
-            case 'machineGun':
-                this.guns = this.game.add.weapon(20, 'bullet');
-                break;
-            case 'laser':
-                this.guns = this.game.add.weapon(10, 'laser');
-                break;
-            case 'photon':
-                this.guns = this.game.add.weapon(1, 'photon');
-                break;
-            default:
-                break;
-        }
-        
+    ChangeGuns(id: number){
+        var gunInfo = GUNS.find(e => e.id === id);
+        this.guns = this.game.add.weapon(gunInfo.fireRate, gunInfo.spriteName);
+        this.guns.bulletCollideWorldBounds = gunInfo.bulletCollideWorldBounds;
+        this.guns.bulletKillDistance = gunInfo.bulletKillDistance;
+        this.guns.bulletSpeed = gunInfo.bulletSpeed;
+        this.guns.bulletAngleVariance = gunInfo.bulletAngleVariance;
     }
 
     DestroyShip(){

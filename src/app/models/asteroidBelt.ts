@@ -40,6 +40,7 @@ export class AsteroidBelt extends GameObject{
         var asteroid = this.list.create(x, y, sprite);
         asteroid.anchor.set(0.5, 0.5);
         asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
+        asteroid.health = 3;
 
         var randomAngle = Phaser.Math.degToRad(this.game.rnd.angle());
         var randomVelocity = this.game.rnd.integerInRange(50, 150);
