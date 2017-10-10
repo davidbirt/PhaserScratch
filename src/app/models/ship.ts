@@ -79,6 +79,7 @@ export class Ship  extends GameObject{
         this.weaponDamage = gunInfo.damage;
     }
 
+
     DestroyShip(){
         this.lives--;
         // meed to be impervious to collisions for a cpl seconds/
@@ -86,8 +87,19 @@ export class Ship  extends GameObject{
         if(this.lives > 0){
             this.game.time.events.add(Phaser.Timer.SECOND * this.settings.timeToReset, () => {
                 this.instance.reset(this.game.width /2,this.game.height /2);
-                this.invulnerable = false;
+                this.game.time.events.repeat(Phaser.Timer.SECOND * this.settings.blinkdelay, this.settings.timeToReset/this.settings.blinkdelay,() => {
+                    this.instance.visible = !this.instance.visible;
+                    if(!this.invulnerable && !this.instance.visible)
+                        this.instance.visible = true;
+                },this)
+
+                this.game.time.events.add((Phaser.Timer.SECOND * this.settings.timeToReset) + 0.3, () => { 
+                    this.invulnerable = false;
+                    this.instance.visible = true;
+                }, this)
             },this);
+
+            
         }
     }
 }

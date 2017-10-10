@@ -5,7 +5,7 @@ export class Asteroid{
     minAngularVelocity: number;
     maxAngularVelocity: number;
     health: number;
-    score: 20;
+    score: number;
     spriteName: string;
     nextSize: string;
     pieces: number;
