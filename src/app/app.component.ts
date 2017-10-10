@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Ship } from './models/ship';
 import { GameSettings } from './models/gameSettings';
 import { AsteroidBelt } from './models/asteroidBelt';
+import { GameRule } from './models/level';
 
 class SimpleGame {
   constructor() {
@@ -31,12 +32,12 @@ class SimpleGame {
 
 
   preload() {
-    this.game.load.image('bg', '../assets/bg2.jpg');
-    this.game.load.image('asteroidl', '../assets/asteroids/ast_lrg.png');
-    this.game.load.image('asteroidm', '../assets/asteroids/ast_med.png');
-    this.game.load.image('asteroids', '../assets/asteroids/ast_sml.png');
+    this.game.load.image('bg', '../assets/bg7.jpg');
+    this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
+    this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
+    this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
     this.game.load.image('bullet', '../assets/bullets/bullet.png');
-    this.game.load.image('ship', '../assets/ship.png');
+    this.game.load.image('ship', '../assets/ship2.png');
     this.game.load.image('laser', '../assets/bullets/lazer.png');
   }
 
@@ -74,23 +75,24 @@ class SimpleGame {
 
 
   update() {
-    if (this.key_fire.isDown){
-         this.ship.FireGuns();
+    if (this.key_fire.isDown) {
+      this.ship.FireGuns();
     }
-    if(this.key_machineGun.isDown) {
+    if (this.key_machineGun.isDown) {
       this.ship.guns = this.game.add.weapon(5, 'bullet');
     }
-    if(this.key_laser.isDown) {
+    if (this.key_laser.isDown) {
       this.ship.guns = this.game.add.weapon(2, 'laser');
     }
-    this.ship.render(this.key_left,this.key_right,this.key_thrust, this.key_reverse);
-    
+    this.ship.render(this.key_left, this.key_right, this.key_thrust, this.key_reverse);
+
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
     this.bulletGroup.bullets.forEachExists(this.ship.checkBoundary, this);
 
-    this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, this.collide, null,this);
-    this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null,this);
+
+    this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, this.collide, null, this);
+    this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null, this);
   }
 
   collide(target: any, asteroid : any){
@@ -102,6 +104,16 @@ class SimpleGame {
       this.hud.text = this.ship.lives.toString();
     }else{
       //if its an asteroid that was destroyed then we need to check and see if its time to level up!
+      // does this asteroid have pieces?
+      if(this.asteroids.settings[asteroid.key].nextSize)
+        // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
+        // var rule = (<GameRule[]>this.settings.levels[this.level]).find(rl => rl.asteroid.spriteName == asteroid.key);
+        var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
+        if(rule){
+          for (var index = 0; index < rule.asteroid.pieces; index++) {
+            this.asteroids.createAsteroid(asteroid.x,asteroid.y,rule.asteroid.nextSize);
+          }  
+        }
     }
   }
 

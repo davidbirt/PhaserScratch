@@ -6,8 +6,8 @@ export class GameSettings {constructor(){ }
     startingAsteroids:number = 4;
     maxAsteroids:number = 20;
     incrementAsteroids:number = 2;
-    asteroidLarge = <Asteroid> { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidLarge', pieces: 3 };
-    asteroidMed = <Asteroid>  { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidMed', pieces: 2 };
+    asteroidLarge = <Asteroid> { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidLarge', nextSize: 'asteroidMed',  pieces: 2 };
+    asteroidMed = <Asteroid>  { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidMed', nextSize: 'asteroidSmall', pieces: 3 };
     asteroidSmall = <Asteroid> { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidSmall' };
 
     // Levels

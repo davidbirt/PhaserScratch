@@ -16,7 +16,6 @@ export class AsteroidBelt extends GameObject{
     settings : GameSettings;
 
     buildAsteroids(level: { Rules: GameRule[] }) {
-        console.log(level);
         for (var key in level.Rules) {
             var rule = level.Rules[key];
 
@@ -32,15 +31,22 @@ export class AsteroidBelt extends GameObject{
                     x = Math.random() * this.game.width;
                     y = Math.round(Math.random()) * this.game.height;
                 }
-
-                var asteroid = this.list.create(x, y, rule.asteroid.spriteName);
-                asteroid.anchor.set(0.5, 0.5);
-                asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
-
-                var randomAngle = Phaser.Math.degToRad(this.game.rnd.angle());
-                var randomVelocity = this.game.rnd.integerInRange(50, 150);
-                this.game.physics.arcade.velocityFromRotation(randomAngle, randomVelocity, asteroid.body.velocity);
+                this.createAsteroid(x,y,rule.asteroid.spriteName);
             }
         }
+    }
+
+    buildAsteroid(rule: GameRule){
+        
+    }
+
+    createAsteroid(x:number, y:number, sprite : string){
+        var asteroid = this.list.create(x, y, sprite);
+        asteroid.anchor.set(0.5, 0.5);
+        asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
+
+        var randomAngle = Phaser.Math.degToRad(this.game.rnd.angle());
+        var randomVelocity = this.game.rnd.integerInRange(50, 150);
+        this.game.physics.arcade.velocityFromRotation(randomAngle, randomVelocity, asteroid.body.velocity);
     }
 }
