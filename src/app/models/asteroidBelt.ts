@@ -33,7 +33,7 @@ export class AsteroidBelt extends GameObject{
                     y = Math.round(Math.random()) * this.game.height;
                 }
 
-                var asteroid = this.list.create(x, y, rule.asteroid);
+                var asteroid = this.list.create(x, y, rule.asteroid.spriteName);
                 asteroid.anchor.set(0.5, 0.5);
                 asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
 

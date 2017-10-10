@@ -1,9 +1,11 @@
+import {Asteroid} from './asteroid';
+
 export class GameRule{
-    constructor(asteroid : any, count : number, id : number){
+    constructor(asteroid : Asteroid, count : number, id : number){
         this.asteroid = asteroid;
         this.count = count;
     };
-    asteroid : any;
+    asteroid : Asteroid;
     count : number;
     id : number;
 }
