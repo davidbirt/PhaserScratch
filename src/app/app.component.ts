@@ -107,7 +107,6 @@ class SimpleGame {
       // does this asteroid have pieces?
       if(this.asteroids.settings[asteroid.key].nextSize)
         // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
-        // var rule = (<GameRule[]>this.settings.levels[this.level]).find(rl => rl.asteroid.spriteName == asteroid.key);
         var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
         if(rule){
           for (var index = 0; index < rule.asteroid.pieces; index++) {

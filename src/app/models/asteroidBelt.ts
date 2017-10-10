@@ -36,10 +36,6 @@ export class AsteroidBelt extends GameObject{
         }
     }
 
-    buildAsteroid(rule: GameRule){
-        
-    }
-
     createAsteroid(x:number, y:number, sprite : string){
         var asteroid = this.list.create(x, y, sprite);
         asteroid.anchor.set(0.5, 0.5);
