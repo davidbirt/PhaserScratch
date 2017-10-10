@@ -83,13 +83,13 @@ class SimpleGame {
     }
 
     if(this.key_machineGun.isDown) {
-      this.ship.ChangeGuns('machineGun');
+      this.ship.ChangeGuns(1);
     }
     if(this.key_laser.isDown) {
-      this.ship.ChangeGuns('laser');
+      this.ship.ChangeGuns(2);
     }
     if(this.key_photon.isDown) {
-      this.ship.ChangeGuns('photon');
+      this.ship.ChangeGuns(3);
     }
     this.ship.render(this.key_left, this.key_right, this.key_thrust, this.key_reverse);
 
@@ -104,14 +104,17 @@ class SimpleGame {
 
   collide(target: any, asteroid : any){
     target.kill();
-    asteroid.kill();
 
     if(target.key == 'ship'){
       this.ship.DestroyShip();
       this.hud.text = this.ship.lives.toString();
     }else{
       //if its an asteroid that was destroyed then we need to check and see if its time to level up!
+      asteroid.health -= this.ship.weaponDamage;
       // does this asteroid have pieces?
+      if(asteroid.health <= 0) {
+        asteroid.kill();
+      }
       if(this.asteroids.settings[asteroid.key].nextSize)
         // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
         var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
