@@ -1,5 +1,5 @@
-export class GameLevel{
-    constructor(asteroid : any, count : number){
+export class GameRule{
+    constructor(asteroid : any, count : number, id : number){
         this.asteroid = asteroid;
         this.count = count;
     };

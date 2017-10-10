@@ -1,4 +1,4 @@
-import { GameLevel } from './level';
+import { GameRule } from './level';
 
 export class GameSettings {constructor(){ }
     // Asteroid settings
@@ -6,14 +6,18 @@ export class GameSettings {constructor(){ }
     maxAsteroids:number = 20;
     incrementAsteroids:number = 2;
     asteroidLarge : { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidLarge', pieces: 3 }
-    asteroidMed :   { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidMedium', pieces: 2 }
+    asteroidMed :   { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidMed', pieces: 2 }
     asteroidSmall : { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, nextSize: 'asteroidSmall' }
 
     // Levels
-    levels: GameLevel[] = [
-        { asteroid: 'asteroidLarge', count: 3 , id : 1},
-        { asteroid: 'asteroidMed', count: 3, id : 2 },
-        { asteroid: 'asteroidSmall', count: 3, id : 3 }
+    levels: any[] = [
+        {
+            Rules: GameRule[3] = [
+                new GameRule('asteroidLarge', 2, 1),
+                new GameRule('asteroidMed', 3, 2),
+                new GameRule('asteroidSmall', 3, 3),
+            ]
+        }
     ];
 
 
