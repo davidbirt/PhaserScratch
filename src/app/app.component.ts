@@ -6,7 +6,7 @@ import { AsteroidBelt } from './models/asteroidBelt';
 
 class SimpleGame {
   constructor() {
-    this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { 
+    this.game = new Phaser.Game(1200, 780, Phaser.AUTO, 'content', { 
       preload: this.preload, 
       create: this.create, 
       update: this.update, 
@@ -25,17 +25,21 @@ class SimpleGame {
   bulletGroup: Phaser.Weapon;
   settings : GameSettings;
   hud: Phaser.Text;
+  level: number;
+
 
   preload() {
-    this.game.load.image('bg', '../assets/bg2.jpg');
-    this.game.load.image('asteroidl', '../assets/asteroids/ast_lrg.png');
-    this.game.load.image('asteroidm', '../assets/asteroids/ast_med.png');
-    this.game.load.image('asteroids', '../assets/asteroids/ast_sml.png');
-    this.game.load.image('bullet', '../assets/bullets/bullet.png');
-    this.game.load.image('ship', '../assets/ship.png');
+    //some comment to reload
+    this.game.load.image('bg', '../assets/bg8.jpg');
+    this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
+    this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
+    this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
+    this.game.load.image('bullet', '../assets/bullets/lazer.png');
+    this.game.load.image('ship', '../assets/ship2.png');
   }
 
   create() {
+    this.level = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.settings = new GameSettings();
     
@@ -44,6 +48,7 @@ class SimpleGame {
 
     // setup the ship and its physics
     this.ship = new Ship(this.game);
+    this.ship.instance.scale.setTo(0.1, 0.1);
     
     // need a group for the bullets
     this.bulletGroup = this.game.add.weapon(30,'bullet');
@@ -57,11 +62,12 @@ class SimpleGame {
 
      // Add asteroids group to the game world.
      this.asteroids = new AsteroidBelt(this.game);
-     this.asteroids.buildAsteroids();
+     this.asteroids.buildAsteroids(this.settings.levels[this.level]);
 
      // Add hud display to the game world.
      this.hud = this.game.add.text(20,10, this.ship.lives.toString(), this.settings.counterFontStyle);
   }
+
 
   update() {
     if (this.key_fire.isDown){
@@ -71,6 +77,7 @@ class SimpleGame {
     
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
+    this.bulletGroup.bullets.forEachExists(this.ship.checkBoundary, this);
 
     this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, this.collide, null,this);
     this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null,this);

@@ -1,5 +1,7 @@
 /// <reference path="../services/phaser.d.ts" />
 import { GameObject } from './gameEntity';
+import { GameSettings } from './gameSettings'
+import { GameLevel } from './level'
 
 export class AsteroidBelt extends GameObject{
     constructor(game : Phaser.Game ){ 
@@ -7,12 +9,15 @@ export class AsteroidBelt extends GameObject{
         this.list = this.game.add.group();
         this.list.enableBody = true;
         this.list.physicsBodyType = Phaser.Physics.ARCADE;
+        this.settings = new GameSettings();
      }
     
     list:Phaser.Group;
+    settings : GameSettings;
 
-    buildAsteroids() {
-        for (var i=0; i < 5; i++ ) {
+    buildAsteroids(level:GameLevel) {
+        console.log(level);
+        for (var i=0; i < level.count; i++ ) {
             var side = Math.round(Math.random());
             var x;
             var y;
@@ -25,7 +30,7 @@ export class AsteroidBelt extends GameObject{
                 y = Math.round(Math.random()) * this.game.height;
             }
             
-            var asteroid = this.list.create(x, y, 'asteroidm');
+            var asteroid = this.list.create(x, y, level.asteroid);
             asteroid.anchor.set(0.5, 0.5);
             asteroid.body.angularVelocity = this.game.rnd.integerInRange(0, 200);
      
