@@ -103,13 +103,14 @@ class SimpleGame {
     if(!this.ship.invulnerable)this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null, this);
   }
 
+  
   collide(target: any, asteroid : any){
     target.kill();
     asteroid.kill();
 
     if(target.key == 'ship'){
       this.ship.DestroyShip();
-      this.hud.text = this.ship.lives.toString();
+      this.hud.text = 'Lives: ' + this.ship.lives.toString() + '| AMMO: ' + this.ship.ammoPool.toString();
     }else{
       //if its an asteroid that was destroyed then we need to check and see if its time to level up!
       // does this asteroid have pieces?
