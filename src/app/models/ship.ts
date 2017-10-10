@@ -36,16 +36,16 @@ export class Ship  extends GameObject{
     render(key_left: Phaser.Key, key_right: Phaser.Key, key_thrust: Phaser.Key, key_reverse: Phaser.Key) {
         // Rotational movement
         if (key_left.isDown) {
-            this.instance.body.angularVelocity = -200;
+            this.instance.body.angularVelocity = -220;
         } else if (key_right.isDown) {
-            this.instance.body.angularVelocity = 200;
+            this.instance.body.angularVelocity = 220;
         } else {
             this.instance.body.angularVelocity = 0;
         }
 
         // Thrust and Brake
         if (key_thrust.isDown) {
-            this.game.physics.arcade.accelerationFromRotation(this.rotation, 350, this.instance.body.acceleration);
+            this.game.physics.arcade.accelerationFromRotation(this.rotation, 400, this.instance.body.acceleration);
         } else if (key_reverse.isDown) {
             this.game.physics.arcade.accelerationFromRotation(-1 * this.rotation, 400, this.instance.body.acceleration);
         } else {
@@ -59,8 +59,8 @@ export class Ship  extends GameObject{
     initShip(){
         this.instance.anchor.set(0.5, 0.5);
         this.game.physics.enable(this.instance, Phaser.Physics.ARCADE);
-        this.instance.body.drag.set(100);
-        this.instance.body.maxVelocity.set(300);
+        this.instance.body.drag.set(10);
+        this.instance.body.maxVelocity.set(400);
     }
 
     /** Init weapon system */
@@ -104,5 +104,6 @@ export class Ship  extends GameObject{
 
             
         }
+        return this.lives;
     }
 }

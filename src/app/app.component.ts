@@ -29,12 +29,15 @@ class SimpleGame {
   bulletGroup: Phaser.Weapon;
   settings : GameSettings;
   hud: Phaser.Text;
+  bg1: Phaser.Sprite;
+  bg2: Phaser.Sprite;
   
   level: number;
 
 
   preload() {
     this.game.load.image('bg', '../assets/bg8.jpg');
+    this.game.load.image('bg2', '../assets/bg7.jpg');
     this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
     this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
     this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
@@ -50,7 +53,8 @@ class SimpleGame {
     this.settings = new GameSettings();
     
     // setup the background
-    this.game.add.sprite(0, 0, 'bg');
+    this.bg1 = this.game.add.sprite(0, 0, 'bg');
+    this.bg2 = this.game.add.sprite(0, 0, 'bg2');
 
     // setup the ship and its physics
     this.ship = new Ship(this.game);
