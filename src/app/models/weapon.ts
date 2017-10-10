@@ -2,6 +2,7 @@
 
 export class Gun {
     id: number;
+    damage: number;
     name: string;
     spriteName: string;
     fireRate: number;
@@ -9,11 +10,13 @@ export class Gun {
     bulletKillDistance: number;
     bulletSpeed: number;
     bulletAngleVariance: number;
+    
 };
 
 export const GUNS: Gun[] = [
     {
         id: 1,
+        damage: 1,
         name: 'machineGun',
         spriteName: 'bullet',
         fireRate: 25,
@@ -24,6 +27,7 @@ export const GUNS: Gun[] = [
     },
     {
         id: 2,
+        damage: 3, 
         name: 'laser',
         spriteName: 'laser',
         fireRate: 10,
@@ -35,6 +39,7 @@ export const GUNS: Gun[] = [
     },
     {
         id: 3,
+        damage: 7,
         name: 'photon',
         spriteName: 'photon',
         fireRate: 2,

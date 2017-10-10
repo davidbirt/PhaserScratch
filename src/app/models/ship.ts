@@ -21,6 +21,7 @@ export class Ship  extends GameObject{
     /** PROPERTIES */
     instance : Phaser.Sprite;
     guns : Phaser.Weapon;
+    weaponDamage: number;
     lives : number = 3;
     get rotation():number{
         return (this.instance.rotation - (Phaser.Math.PI2 / 4));
@@ -73,6 +74,7 @@ export class Ship  extends GameObject{
         this.guns.bulletKillDistance = gunInfo.bulletKillDistance;
         this.guns.bulletSpeed = gunInfo.bulletSpeed;
         this.guns.bulletAngleVariance = gunInfo.bulletAngleVariance;
+        this.weaponDamage = gunInfo.damage;
     }
 
     DestroyShip(){
