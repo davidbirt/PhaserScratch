@@ -31,10 +31,13 @@ class SimpleGame {
   hud: Phaser.Text;
   
   level: number;
+  bg : Phaser.Sprite;
+  bg2 : Phaser.Sprite;
 
 
   preload() {
     this.game.load.image('bg', '../assets/bg8.jpg');
+    this.game.load.image('bg2', '../assets/bg5.jpg');
     this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
     this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
     this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
@@ -47,10 +50,31 @@ class SimpleGame {
   create() {
     this.level = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.settings = new GameSettings();
     
     // setup the background
-    this.game.add.sprite(0, 0, 'bg');
+    this.bg = this.game.add.sprite(0, 0, 'bg');
+    this.bg2 = this.game.add.sprite(0,0,'bg2');
+    
+    // game settings and load the levels
+    this.settings = new GameSettings();
+    // this.settings.levels = [
+    //   {
+    //     Rules: GameRule[3] = [
+    //       new GameRule(this.settings.asteroidLarge, 2, 1),
+    //       new GameRule(this.settings.asteroidMed, 3, 2),
+    //       new GameRule(this.settings.asteroidSmall, 3, 3),
+    //     ],
+    //     bg : this.bg
+    //   },
+    //   {
+    //     Rules: GameRule[3] = [
+    //       new GameRule(this.settings.asteroidLarge, 2, 1),
+    //       new GameRule(this.settings.asteroidMed, 3, 2),
+    //       new GameRule(this.settings.asteroidSmall, 3, 3),
+    //     ],
+    //     bg:this.bg2
+    //   }
+    // ];
 
     // setup the ship and its physics
     this.ship = new Ship(this.game);
@@ -108,6 +132,8 @@ class SimpleGame {
     target.kill();
     asteroid.kill();
 
+    this.bg.kill()
+ 
     if(target.key == 'ship'){
       this.ship.DestroyShip();
       this.hud.text = 'Lives: ' + this.ship.lives.toString() + '| AMMO: ' + this.ship.ammoPool.toString();
@@ -116,10 +142,9 @@ class SimpleGame {
       // does this asteroid have pieces?
         asteroid.kill();
 
-      if(this.asteroids.settings[asteroid.key].nextSize)
         // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
         var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
-        if(rule){
+        if(rule && this.asteroids.settings[asteroid.key]){
           for (var index = 0; index < rule.asteroid.pieces; index++) {
             this.asteroids.createAsteroid(asteroid.x,asteroid.y,rule.asteroid.nextSize);
           }  
