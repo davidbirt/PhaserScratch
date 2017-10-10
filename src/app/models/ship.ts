@@ -9,7 +9,9 @@ export class Ship  extends GameObject{
         this.initShip();
 
         // setup the guns
-        this.guns = this.game.add.weapon(50, 'bullet');
+        //fire the main guns in 5 round bursts
+        this.guns = this.game.add.weapon(5, 'bullet');
+        
     }
 
     /** PROPERTIES */
@@ -40,6 +42,7 @@ export class Ship  extends GameObject{
         } else {
             this.instance.body.acceleration.set(0);
         }
+
         this.checkBoundary(this.instance);
     }
 
@@ -57,6 +60,10 @@ export class Ship  extends GameObject{
         this.guns.fireRate = 90;
         this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation);        
         this.guns.fire();  
+    }
+
+    ChangeGuns(fireRate: number, weapon: string){
+        this.guns = this.game.add.weapon(fireRate, weapon);
     }
 
     DestroyShip(){

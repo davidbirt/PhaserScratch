@@ -22,6 +22,8 @@ class SimpleGame {
   key_thrust: Phaser.Key;
   key_reverse: Phaser.Key;
   key_fire : Phaser.Key;
+  key_laser: Phaser.Key;
+  key_machineGun: Phaser.Key;
   bulletGroup: Phaser.Weapon;
   settings : GameSettings;
   hud: Phaser.Text;
@@ -29,13 +31,13 @@ class SimpleGame {
 
 
   preload() {
-    //some comment to reload
-    this.game.load.image('bg', '../assets/bg8.jpg');
-    this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
-    this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
-    this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
-    this.game.load.image('bullet', '../assets/bullets/lazer.png');
-    this.game.load.image('ship', '../assets/ship2.png');
+    this.game.load.image('bg', '../assets/bg2.jpg');
+    this.game.load.image('asteroidl', '../assets/asteroids/ast_lrg.png');
+    this.game.load.image('asteroidm', '../assets/asteroids/ast_med.png');
+    this.game.load.image('asteroids', '../assets/asteroids/ast_sml.png');
+    this.game.load.image('bullet', '../assets/bullets/bullet.png');
+    this.game.load.image('ship', '../assets/ship.png');
+    this.game.load.image('laser', '../assets/bullets/lazer.png');
   }
 
   create() {
@@ -51,7 +53,7 @@ class SimpleGame {
     this.ship.instance.scale.setTo(0.1, 0.1);
     
     // need a group for the bullets
-    this.bulletGroup = this.game.add.weapon(30,'bullet');
+    this.bulletGroup = this.ship.guns;
     
     // setup user input
     this.key_left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
@@ -59,7 +61,9 @@ class SimpleGame {
     this.key_thrust = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
     this.key_reverse = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     this.key_fire = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
+    this.key_machineGun = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+    this.key_laser = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+    
      // Add asteroids group to the game world.
      this.asteroids = new AsteroidBelt(this.game);
      this.asteroids.buildAsteroids(this.settings.levels[this.level]);
@@ -73,7 +77,13 @@ class SimpleGame {
     if (this.key_fire.isDown){
          this.ship.FireGuns();
     }
-    this.ship.render(this.key_left,this.key_right,this.key_thrust,this.key_reverse);
+    if(this.key_machineGun.isDown) {
+      this.ship.guns = this.game.add.weapon(5, 'bullet');
+    }
+    if(this.key_laser.isDown) {
+      this.ship.guns = this.game.add.weapon(2, 'laser');
+    }
+    this.ship.render(this.key_left,this.key_right,this.key_thrust, this.key_reverse);
     
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
