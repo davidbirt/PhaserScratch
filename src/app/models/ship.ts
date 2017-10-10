@@ -62,8 +62,21 @@ export class Ship  extends GameObject{
         this.guns.fire();  
     }
 
-    ChangeGuns(fireRate: number, weapon: string){
-        this.guns = this.game.add.weapon(fireRate, weapon);
+    ChangeGuns(weapon: string){
+        switch (weapon) {
+            case 'machineGun':
+                this.guns = this.game.add.weapon(20, 'bullet');
+                break;
+            case 'laser':
+                this.guns = this.game.add.weapon(10, 'laser');
+                break;
+            case 'photon':
+                this.guns = this.game.add.weapon(1, 'photon');
+                break;
+            default:
+                break;
+        }
+        
     }
 
     DestroyShip(){
