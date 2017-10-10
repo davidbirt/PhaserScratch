@@ -11,26 +11,34 @@ export class GameSettings {constructor(){ }
     asteroidSmall = <Asteroid> { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidSmall' };
 
      // Levels
-     _levels: any[] =  [
+     private _levels: any[] =  [
         {
             Rules: GameRule[3] = [
-                new GameRule(this.asteroidLarge, 2, 1),
-                new GameRule(this.asteroidMed, 3, 2),
-                new GameRule(this.asteroidSmall, 3, 3),
-            ]
+                new GameRule(this.asteroidLarge, 0, 1),
+                new GameRule(this.asteroidMed, 0, 2),
+                new GameRule(this.asteroidSmall, 1, 3),
+            ],
+            bg: Phaser.Sprite,
+            id: 1
+        },
+        {
+            Rules: GameRule[3] = [
+                new GameRule(this.asteroidLarge, 3, 1),
+                new GameRule(this.asteroidMed, 5, 2),
+                new GameRule(this.asteroidSmall, 1, 3),
+            ],
+            bg: Phaser.Sprite,
+            id: 2
         }
     ];
-
     
     public get levels() : any[] {
         return this._levels;
     }
     
-    
     public set levels(v : any[]) {
         this._levels = v;
     }
-    
 
     // Ship Settings
     startX: number;

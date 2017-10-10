@@ -17,8 +17,6 @@ export class Ship  extends GameObject{
         
     }
 
-    
-
     /** PROPERTIES */
     instance : Phaser.Sprite;
     guns : Phaser.Weapon;
