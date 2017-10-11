@@ -45,6 +45,7 @@ class SimpleGame {
     this.game.load.image('ship', '../assets/ship2.png');
     this.game.load.image('laser', '../assets/bullets/lazer.png');
     this.game.load.image('photon', '../assets/bullets/photon.png');
+    this.game.load.audio('bullet', '../assets/sounds/bullet.wav');
   }
 
   create() {

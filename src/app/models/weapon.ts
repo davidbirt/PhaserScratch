@@ -5,6 +5,7 @@ export class Gun {
     ammoCost: number;
     damage: number;
     name: string;
+    soundName: string;
     spriteName: string;
     fireRate: number;
     bulletCollideWorldBounds: boolean;
@@ -21,6 +22,7 @@ export const GUNS: Gun[] = [
         damage: 1,
         name: 'machineGun',
         spriteName: 'bullet',
+        soundName: 'bullet',
         fireRate: 25,
         bulletCollideWorldBounds: false,
         bulletKillDistance: 2,
@@ -33,6 +35,7 @@ export const GUNS: Gun[] = [
         damage: 3, 
         name: 'laser',
         spriteName: 'laser',
+        soundName: 'laser',
         fireRate: 10,
         bulletCollideWorldBounds: false,
         bulletKillDistance: 4,
@@ -46,6 +49,7 @@ export const GUNS: Gun[] = [
         damage: 7,
         name: 'photon',
         spriteName: 'photon',
+        soundName: 'photon',
         fireRate: 2,
         bulletCollideWorldBounds: false,
         bulletKillDistance: 6,
