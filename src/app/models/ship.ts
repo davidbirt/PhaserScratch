@@ -65,14 +65,13 @@ export class Ship  extends GameObject{
 
     /** Init weapon system */
     FireGuns(){
+        this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
+        this.guns.fireRate = this.weapon.fireRate;
+        this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation); 
+        var soundEffect = this.game.add.audio(this.weapon.soundName);
+        soundEffect.allowMultiple = false;
         if(this.ammoPool > this.weapon.ammoCost || this.weapon.ammoCost === 0) {
             this.ammoPool -= this.weapon.ammoCost;
-            this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
-            this.guns.fireRate = 120;
-            this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation); 
-            let soundEffect = this.game.add.audio(this.weapon.soundName);
-            soundEffect.durationMS = 10;
-            soundEffect.allowMultiple = false;
             soundEffect.play();
             this.guns.fire();
         }   

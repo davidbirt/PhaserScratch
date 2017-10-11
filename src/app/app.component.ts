@@ -45,17 +45,17 @@ class SimpleGame {
     this.game.load.image('ship', '../assets/ship2.png');
     this.game.load.image('laser', '../assets/bullets/lazer.png');
     this.game.load.image('photon', '../assets/bullets/photon.png');
-    this.game.load.audio('bullet', '../assets/sounds/bullet.wav');
+    this.game.load.audio('bullet', '../assets/sounds/bullet.mp3');
   }
 
   create() {
     this.level = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.settings = new GameSettings();
-    
     // setup the background
     this.bg1 = this.game.add.sprite(0, 0, 'bg');
     this.bg2 = this.game.add.sprite(0, 0, 'bg2');
+    
 
     // setup the ship and its physics
     this.ship = new Ship(this.game);
