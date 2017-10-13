@@ -33,11 +33,13 @@ class SimpleGame {
   bg1: Phaser.Sprite;
   bg2: Phaser.Sprite;
   gunfire : Phaser.Sound;
+  bg3: Phaser.Sprite;
   level: number;
 
   preload() {
     this.game.load.image('bg', '../assets/bg8.jpg');
     this.game.load.image('bg2', '../assets/bg7.jpg');
+    this.game.load.image('bg3', '../assets/bg6.jpg');
     this.game.load.image('asteroidLarge', '../assets/asteroids/ast_lrg.png');
     this.game.load.image('asteroidMed', '../assets/asteroids/ast_med.png');
     this.game.load.image('asteroidSmall', '../assets/asteroids/ast_sml.png');
@@ -54,10 +56,17 @@ class SimpleGame {
     this.level = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.settings = new GameSettings();
+
     // setup the background
-    this.bg1 = this.game.add.sprite(0, 0, 'bg');
+    this.bg3 = this.game.add.sprite(0, 0, 'bg3');
     this.bg2 = this.game.add.sprite(0, 0, 'bg2');
+    this.bg1 = this.game.add.sprite(0, 0, 'bg');
     
+     this.settings = new GameSettings();
+     this.settings.levels[0].bg = this.bg1;
+     this.settings.levels[1].bg = this.bg2;
+     this.settings.levels[2].bg = this.bg3;
+
     // setup the ship and its physics
     this.ship = new Ship(this.game);
     
@@ -104,27 +113,40 @@ class SimpleGame {
     if(!this.ship.invulnerable)this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null, this);
   }
 
-  
-  collide(target: any, asteroid : any){
+
+  collide(target: any, asteroid: any) {
     target.kill();
     asteroid.kill();
 
-    if(target.key == 'ship'){
+    if (target.key == 'ship') {
       this.ship.DestroyShip();
       this.hud.text = 'Lives: ' + this.ship.lives.toString() + '| AMMO: ' + this.ship.ammoPool.toString();
-    }else{
+    } else {
       //if its an asteroid that was destroyed then we need to check and see if its time to level up!
       // does this asteroid have pieces?
-        asteroid.kill();
+      asteroid.kill();
+      if (this.asteroids.list.children.filter(ass => (<Phaser.Sprite>ass).alive).length == 0) {
+        this.settings.levels[this.level].bg.kill();
+        this.level++;
+        this.game.time.events.add(3,()=>{
+          this.settings.levels[this.level].Rules.forEach(element => {
+            for (var index = 0; index < element.count; index++) {
+              this.asteroids.createAsteroid(asteroid.x, asteroid.y, element.asteroid.spriteName);
+            }
+          });
+        },this)
 
-      if(this.asteroids.settings[asteroid.key].nextSize)
-        // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
-        var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
-        if(rule){
-          for (var index = 0; index < rule.asteroid.pieces; index++) {
-            this.asteroids.createAsteroid(asteroid.x,asteroid.y,rule.asteroid.nextSize);
-          }  
+      } else {
+        if (this.asteroids.settings[asteroid.key].nextSize) {
+          // then find the GameRule that corresponds to that Asteroid type on this level and call the belt to build out those asteroids
+          var rule = this.settings.levels[this.level].Rules.find(r => r.asteroid.spriteName == asteroid.key)
+          if (rule) {
+            for (var index = 0; index < rule.asteroid.pieces; index++) {
+              this.asteroids.createAsteroid(asteroid.x, asteroid.y, rule.asteroid.nextSize);
+            }
+          }
         }
+      }
     }
   }
 

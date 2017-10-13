@@ -15,7 +15,7 @@ export class Ship  extends GameObject{
         
         this.ChangeGuns(1);
         this.ammoPool = 200;
-    } 
+    }
 
     /** PROPERTIES */
     instance : Phaser.Sprite;
