@@ -2,19 +2,18 @@
 import { GameObject } from './gameEntity';
 import { GUNS } from './weapon';
 import { Gun } from './weapon';
+import { GameSettings } from './gameSettings';
 
 
 export class Ship  extends GameObject{
-    constructor(game : Phaser.Game) {
-        super(game);
+    constructor(game : Phaser.Game, settings: GameSettings) {
+        super(game,settings);
         // so what oes into setting up a ship
         this.instance = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
         
         // setup the guns
         this.initShip();
-        
-        this.ChangeGuns(1);
-        this.ammoPool = 200;
+        this.ammoPool = 500;
     }
 
     /** PROPERTIES */
@@ -68,17 +67,22 @@ export class Ship  extends GameObject{
 
     InitGuns(){
         // setup all the weapons that this ship can use.
-        this.machineGun = this.game.add.weapon( GUNS[0].fireRate, GUNS[0].spriteName);
-        GUNS[0].weapon = this.machineGun;
-        this.lasers =  this.game.add.weapon(GUNS[1].fireRate, GUNS[1].spriteName);
-        GUNS[1].weapon = this.lasers;
-        this.torpedos =  this.game.add.weapon(GUNS[2].fireRate, GUNS[2].spriteName);
-        GUNS[2].weapon = this.torpedos;
-        
-    
-        this.gunfire = this.game.add.audio('gunShot',0.03);
-        this.guns = GUNS[0];
-        this.guns.weapon.fireLimit = 5;
+        for (var index = 0; index < GUNS.length; index++) {
+            GUNS[index].weapon = this.game.add.weapon( GUNS[index].fireRate, GUNS[index].spriteName);
+            GUNS[index].sound = this.game.add.audio(GUNS[index].soundName ,0.2);
+            GUNS[index].weapon.index = index;
+             //lifecycle events
+             GUNS[index].weapon.onFireLimit.add(
+                (wpn,limit) =>{
+                  console.log(wpn + ' ' + limit);
+                  this.game.time.events.add(500,() =>{
+                    GUNS[wpn.index].weapon.resetShots();
+                  })
+                },this
+              )
+        }
+
+        this.ChangeGuns(1);
         
         //lifecycle events
         this.guns.weapon.onFireLimit.add(
@@ -88,12 +92,7 @@ export class Ship  extends GameObject{
             })
           },this
         )
-        // init code
-        this.guns.weapon.bulletInheritSpriteSpeed = true;
-        this.guns.weapon.bulletCollideWorldBounds
-        this.guns.weapon.bulletKillDistance = this.guns.bulletKillDistance;
-        this.guns.weapon.bulletSpeed = this.guns.bulletSpeed;
-        this.guns.weapon.bulletAngleVariance = this.guns.bulletAngleVariance;
+      
     }
 
     /** Init weapon system */
@@ -104,14 +103,23 @@ export class Ship  extends GameObject{
         if(this.ammoPool > this.guns.ammoCost || this.guns.ammoCost === 0) {
             this.ammoPool -= this.guns.ammoCost;
             this.guns.weapon.fire();
+            this.settings.updateHud.dispatch(this.ammoPool);
         }   
 
-        if(!this.gunfire.isPlaying)
-            this.gunfire.play();
+        if(!this.guns.sound.isPlaying)
+            this.guns.sound.play();
     } 
 
     ChangeGuns(id: number){
         this.guns = GUNS.find(e => e.id === id);
+        this.guns.weapon.fireLimit = this.guns.fireLimit;
+
+        // init code
+        this.guns.weapon.bulletInheritSpriteSpeed = true;
+        this.guns.weapon.bulletCollideWorldBounds = false
+        this.guns.weapon.bulletKillDistance = this.guns.bulletKillDistance;
+        this.guns.weapon.bulletSpeed = this.guns.bulletSpeed;
+        this.guns.weapon.bulletAngleVariance = this.guns.bulletAngleVariance;
     }
 
 

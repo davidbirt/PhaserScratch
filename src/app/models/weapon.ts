@@ -4,6 +4,7 @@ export class Gun{
     ammoCost: number;
     damage: number;
     name: string;
+    sound : Phaser.Sound;
     soundName: string;
     spriteName: string;
     fireRate: number;
@@ -11,7 +12,9 @@ export class Gun{
     bulletKillDistance: number;
     bulletSpeed: number;
     bulletAngleVariance: number;
-    weapon: Phaser.Weapon
+    weapon: Phaser.Weapon;
+    fireLimit: number;
+    continuous:boolean
 };
 
 export const GUNS: Gun[] = [
@@ -21,14 +24,16 @@ export const GUNS: Gun[] = [
         damage: 1,
         name: 'machineGun',
         spriteName: 'bullet',
-        soundName: 'bullet',
+        soundName: 'gunShot',
         fireRate: 60,
         bulletCollideWorldBounds: false,
         bulletKillDistance: 2,
         bulletSpeed: 500,
         bulletAngleVariance: 5,
-        weapon:null
-       
+        weapon:null,
+        sound : null,
+        fireLimit : 5,
+        continuous : false
     },
     {
         id: 2,
@@ -36,13 +41,16 @@ export const GUNS: Gun[] = [
         damage: 3, 
         name: 'laser',
         spriteName: 'laser',
-        soundName: 'laser',
+        soundName: 'lasers',
         fireRate: 150,
         bulletCollideWorldBounds: false,
         bulletKillDistance: 4,
         bulletSpeed: 750,
         bulletAngleVariance: 1,
-        weapon:null
+        weapon:null,
+        sound : null,
+        fireLimit : 6,
+        continuous: false
     },
     {
         id: 3,
@@ -56,7 +64,10 @@ export const GUNS: Gun[] = [
         bulletKillDistance: 6,
         bulletSpeed: 1250,
         bulletAngleVariance: 0,
-        weapon: null
+        weapon: null,
+        sound : null,
+        fireLimit: 1,
+        continuous : true        
     }
 ]
 

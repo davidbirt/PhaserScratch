@@ -5830,6 +5830,7 @@ declare module Phaser {
         trackRotation: boolean;
         x: number;
         y: number;
+        index:number;
 
         addBulletAnimation(name: string, frames?: number[] | string[], frameRate?: number, loop?: boolean, useNumericIndex?: boolean): Phaser.Weapon;
         createBullets(quantity?: number, key?: any, frame?: any, group?: Phaser.Group): Phaser.Weapon;

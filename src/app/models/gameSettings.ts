@@ -1,7 +1,8 @@
 import { GameRule } from './level';
 import { Asteroid } from './asteroid';
 
-export class GameSettings {constructor(){ }
+export class GameSettings {
+    constructor(){ }
     // Asteroid settings
     startingAsteroids:number = 4;
     maxAsteroids:number = 20;
@@ -9,15 +10,15 @@ export class GameSettings {constructor(){ }
     asteroidLarge = <Asteroid> { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidLarge', nextSize: 'asteroidMed',  pieces: 2 };
     asteroidMed = <Asteroid>  { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidMed', nextSize: 'asteroidSmall', pieces: 3 };
     asteroidSmall = <Asteroid> { minVelocity : 50, maxVelocity: 150, minAngularVelocity: 0, maxAngularVelocity: 200, score: 20, spriteName: 'asteroidSmall' };
-
+    updateHud : Phaser.Signal;
 
      // Levels
      private _levels: any[] =  [
         {
             Rules: GameRule[3] = [
-                new GameRule(this.asteroidLarge, 0, 1),
-                new GameRule(this.asteroidMed, 0, 2),
-                new GameRule(this.asteroidSmall, 1, 3),
+                new GameRule(this.asteroidLarge, 1, 1),
+                new GameRule(this.asteroidMed, 2, 2),
+                new GameRule(this.asteroidSmall, 3, 3),
             ],
             bg: Phaser.Sprite,
             id: 1

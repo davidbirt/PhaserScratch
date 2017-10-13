@@ -2,9 +2,9 @@
 import { GameSettings } from './gameSettings';
 
 export class GameObject{
-    constructor(game: Phaser.Game){
+    constructor(game: Phaser.Game, settings: GameSettings){
         this.game = game;
-        this.settings = new GameSettings();
+        this.settings = settings;
     }
 
     game: Phaser.Game;

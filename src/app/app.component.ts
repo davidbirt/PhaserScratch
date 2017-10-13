@@ -50,25 +50,33 @@ class SimpleGame {
     this.game.load.audio('bullet', '../assets/sounds/bullet.mp3');
     this.game.load.audio('machineGun', '../assets/sounds/machine-gun.wav');
     this.game.load.audio('gunShot', '../assets/sounds/MP5.wav');
+    this.game.load.audio('lasers', '../assets/sounds/Hyperion.wav');
+    this.game.load.audio('photon', '../assets/sounds/photon.wav');
   }
+
 
   create() {
     this.level = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.settings = new GameSettings();
 
+    // just seeing if we can use a signal for something.
+    this.settings.updateHud = new Phaser.Signal()
+    this.settings.updateHud.add(function(){
+      this.hud.text = 'Lives: ' + this.ship.lives.toString() + '| AMMO: ' + this.ship.ammoPool.toString();
+    },this);
+
     // setup the background
     this.bg3 = this.game.add.sprite(0, 0, 'bg3');
     this.bg2 = this.game.add.sprite(0, 0, 'bg2');
     this.bg1 = this.game.add.sprite(0, 0, 'bg');
     
-     this.settings = new GameSettings();
      this.settings.levels[0].bg = this.bg1;
      this.settings.levels[1].bg = this.bg2;
      this.settings.levels[2].bg = this.bg3;
 
     // setup the ship and its physics
-    this.ship = new Ship(this.game);
+    this.ship = new Ship(this.game, this.settings);
     
     // setup user input
     this.key_left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
@@ -89,24 +97,15 @@ class SimpleGame {
   }
 
   update() {
-    if (this.key_fire.isDown) {
-      this.ship.FireGuns();
-    }
-
-    if(this.key_machineGun.isDown) {
-      this.ship.ChangeGuns(1);
-    }
-    if(this.key_laser.isDown) {
-      this.ship.ChangeGuns(2);
-    }
-    if(this.key_photon.isDown) {
-      this.ship.ChangeGuns(3);
-    }
+    if (this.key_fire.isDown)this.ship.FireGuns();
+    if(this.key_machineGun.isDown)this.ship.ChangeGuns(1);
+    if(this.key_laser.isDown)this.ship.ChangeGuns(2);
+    if(this.key_photon.isDown)this.ship.ChangeGuns(3);
     this.ship.render(this.key_left, this.key_right, this.key_thrust, this.key_reverse);
 
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
-    this.ship.guns.weapon.bullets.forEachExists(this.ship.checkBoundary, this);
+    if(this.ship.guns.continuous)this.ship.guns.weapon.bullets.forEachExists(this.ship.checkBoundary, this);
 
 
     this.game.physics.arcade.overlap(this.ship.guns.weapon.bullets, this.asteroids.list, this.collide, null, this);
@@ -149,6 +148,7 @@ class SimpleGame {
       }
     }
   }
+
 
   render() {
     // this.game.debug.inputInfo(10,20);
