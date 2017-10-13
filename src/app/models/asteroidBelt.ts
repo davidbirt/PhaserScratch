@@ -4,12 +4,12 @@ import { GameSettings } from './gameSettings'
 import { GameRule } from './level'
 
 export class AsteroidBelt extends GameObject{
-    constructor(game : Phaser.Game ){ 
-        super(game);
+    constructor(game : Phaser.Game, settings: GameSettings ){ 
+        super(game,settings);
         this.list = this.game.add.group();
         this.list.enableBody = true;
         this.list.physicsBodyType = Phaser.Physics.ARCADE;
-        this.settings = new GameSettings();
+        this.settings =settings
      }
     
     list:Phaser.Group;
