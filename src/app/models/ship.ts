@@ -68,26 +68,19 @@ export class Ship  extends GameObject{
     FireGuns(){
         this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
         this.guns.fireRate = this.weapon.fireRate;
+        this.guns.fireRateVariance = 50;
         this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation); 
         if(this.ammoPool > this.weapon.ammoCost || this.weapon.ammoCost === 0) {
             this.ammoPool -= this.weapon.ammoCost;
             this.guns.fire();
         }   
-        // this.game.time.events.repeat(4,0,()=>{
-        //     this.guns.fire();
-        // }, this);
+
         if(!this.gunfire.isPlaying)
             this.gunfire.play();
     } 
 
     ChangeGuns(id: number){
-        var gunInfo = GUNS.find(e => e.id === id);
-        this.weapon = gunInfo;
-        this.guns = this.game.add.weapon(gunInfo.fireRate, gunInfo.spriteName);
-        this.guns.bulletCollideWorldBounds = gunInfo.bulletCollideWorldBounds;
-        this.guns.bulletKillDistance = gunInfo.bulletKillDistance;
-        this.guns.bulletSpeed = gunInfo.bulletSpeed;
-        this.guns.bulletAngleVariance = gunInfo.bulletAngleVariance;
+        this.weapon = GUNS.find(e => e.id === id);
     }
 
 

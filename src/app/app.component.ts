@@ -4,6 +4,7 @@ import { Ship } from './models/ship';
 import { GameSettings } from './models/gameSettings';
 import { AsteroidBelt } from './models/asteroidBelt';
 import { GameRule } from './models/level';
+import { GUNS } from './models/weapon';
 
 class SimpleGame {
   constructor() {
@@ -49,7 +50,6 @@ class SimpleGame {
     this.game.load.audio('gunShot', '../assets/sounds/MP5.wav');
   }
 
-
   create() {
     this.level = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -62,10 +62,12 @@ class SimpleGame {
     this.ship = new Ship(this.game);
     this.ship.instance.scale.setTo(0.1, 0.1);
     this.ship.gunfire = this.game.add.audio('gunShot',0.3);
-    
-    // need a group for the bullets
-    this.bulletGroup = this.ship.guns;
-    this.bulletGroup.bulletInheritSpriteSpeed = true;
+    this.ship.guns = this.game.add.weapon(500, 'bullet');
+    this.ship.guns.bulletInheritSpriteSpeed = true;
+    this.ship.guns.bulletCollideWorldBounds = this.ship.weapon.bulletCollideWorldBounds;
+    this.ship.guns.bulletKillDistance = this.ship.weapon.bulletKillDistance;
+    this.ship.guns.bulletSpeed = this.ship.weapon.bulletSpeed;
+    this.ship.guns.bulletAngleVariance = this.ship.weapon.bulletAngleVariance;
     
     // setup user input
     this.key_left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
@@ -103,7 +105,7 @@ class SimpleGame {
 
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
-    this.bulletGroup.bullets.forEachExists(this.ship.checkBoundary, this);
+    this.ship.guns.bullets.forEachExists(this.ship.checkBoundary, this);
 
 
     this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, this.collide, null, this);
