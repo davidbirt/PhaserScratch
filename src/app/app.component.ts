@@ -89,7 +89,7 @@ class SimpleGame {
     this.key_photon = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
     
      // Add asteroids group to the game world.
-     this.asteroids = new AsteroidBelt(this.game);
+     this.asteroids = new AsteroidBelt(this.game, this.settings);
      this.asteroids.buildAsteroids(this.settings.levels[this.level]);
 
      // Add hud display to the game world.
