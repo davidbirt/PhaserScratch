@@ -31,9 +31,8 @@ class SimpleGame {
   hud: Phaser.Text;
   bg1: Phaser.Sprite;
   bg2: Phaser.Sprite;
-  
+  gunfire : Phaser.Sound;
   level: number;
-
 
   preload() {
     this.game.load.image('bg', '../assets/bg8.jpg');
@@ -46,7 +45,10 @@ class SimpleGame {
     this.game.load.image('laser', '../assets/bullets/lazer.png');
     this.game.load.image('photon', '../assets/bullets/photon.png');
     this.game.load.audio('bullet', '../assets/sounds/bullet.mp3');
+    this.game.load.audio('machineGun', '../assets/sounds/machine-gun.wav');
+    this.game.load.audio('gunShot', '../assets/sounds/MP5.wav');
   }
+
 
   create() {
     this.level = 0;
@@ -56,10 +58,10 @@ class SimpleGame {
     this.bg1 = this.game.add.sprite(0, 0, 'bg');
     this.bg2 = this.game.add.sprite(0, 0, 'bg2');
     
-
     // setup the ship and its physics
     this.ship = new Ship(this.game);
     this.ship.instance.scale.setTo(0.1, 0.1);
+    this.ship.gunfire = this.game.add.audio('gunShot',0.3);
     
     // need a group for the bullets
     this.bulletGroup = this.ship.guns;

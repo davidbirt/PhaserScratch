@@ -26,6 +26,7 @@ export class Ship  extends GameObject{
     ammoPool: number;
     lives : number = 3;
     invulnerable:boolean = false;
+    gunfire : Phaser.Sound;
 
     get rotation():number{
         return (this.instance.rotation - (Phaser.Math.PI2 / 4));
@@ -68,14 +69,16 @@ export class Ship  extends GameObject{
         this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
         this.guns.fireRate = this.weapon.fireRate;
         this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation); 
-        var soundEffect = this.game.add.audio(this.weapon.soundName);
-        soundEffect.allowMultiple = false;
         if(this.ammoPool > this.weapon.ammoCost || this.weapon.ammoCost === 0) {
             this.ammoPool -= this.weapon.ammoCost;
-            soundEffect.play();
             this.guns.fire();
         }   
-    }
+        // this.game.time.events.repeat(4,0,()=>{
+        //     this.guns.fire();
+        // }, this);
+        if(!this.gunfire.isPlaying)
+            this.gunfire.play();
+    } 
 
     ChangeGuns(id: number){
         var gunInfo = GUNS.find(e => e.id === id);
