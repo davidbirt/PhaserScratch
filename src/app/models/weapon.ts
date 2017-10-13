@@ -23,11 +23,11 @@ export const GUNS: Gun[] = [
         name: 'machineGun',
         spriteName: 'bullet',
         soundName: 'bullet',
-        fireRate: 10,
+        fireRate: 60,
         bulletCollideWorldBounds: false,
         bulletKillDistance: 2,
         bulletSpeed: 500,
-        bulletAngleVariance: 10
+        bulletAngleVariance: 5
     },
     {
         id: 2,

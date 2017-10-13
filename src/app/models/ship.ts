@@ -68,7 +68,6 @@ export class Ship  extends GameObject{
     FireGuns(){
         this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
         this.guns.fireRate = this.weapon.fireRate;
-        this.guns.fireRateVariance = 50;
         this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation); 
         if(this.ammoPool > this.weapon.ammoCost || this.weapon.ammoCost === 0) {
             this.ammoPool -= this.weapon.ammoCost;
@@ -77,6 +76,8 @@ export class Ship  extends GameObject{
 
         if(!this.gunfire.isPlaying)
             this.gunfire.play();
+
+
     } 
 
     ChangeGuns(id: number){

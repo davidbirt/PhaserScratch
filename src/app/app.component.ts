@@ -61,8 +61,16 @@ class SimpleGame {
     // setup the ship and its physics
     this.ship = new Ship(this.game);
     this.ship.instance.scale.setTo(0.1, 0.1);
-    this.ship.gunfire = this.game.add.audio('gunShot',0.3);
+    this.ship.gunfire = this.game.add.audio('gunShot',0.03);
     this.ship.guns = this.game.add.weapon(500, 'bullet');
+    this.ship.guns.fireLimit = 5;
+    this.ship.guns.onFireLimit.add(
+      () =>{
+        this.game.time.events.add(500,() =>{
+          this.ship.guns.resetShots();
+        })
+      },this
+    )
     this.ship.guns.bulletInheritSpriteSpeed = true;
     this.ship.guns.bulletCollideWorldBounds = this.ship.weapon.bulletCollideWorldBounds;
     this.ship.guns.bulletKillDistance = this.ship.weapon.bulletKillDistance;
