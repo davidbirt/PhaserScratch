@@ -9,20 +9,20 @@ export class Ship  extends GameObject{
         super(game);
         // so what oes into setting up a ship
         this.instance = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ship');
-        this.initShip();
-
+        
         // setup the guns
+        this.initShip();
+        
         this.ChangeGuns(1);
         this.ammoPool = 200;
-        
-    }
-
-    
+    } 
 
     /** PROPERTIES */
     instance : Phaser.Sprite;
-    guns : Phaser.Weapon;
-    weapon: Gun;
+    machineGun : Phaser.Weapon;
+    lasers : Phaser.Weapon;
+    torpedos : Phaser.Weapon;
+    guns : Gun;
     ammoPool: number;
     lives : number = 3;
     invulnerable:boolean = false;
@@ -59,29 +59,59 @@ export class Ship  extends GameObject{
     /** Ship setup code */
     initShip(){
         this.instance.anchor.set(0.5, 0.5);
+        this.instance.scale.setTo(0.1, 0.1);
         this.game.physics.enable(this.instance, Phaser.Physics.ARCADE);
         this.instance.body.drag.set(10);
         this.instance.body.maxVelocity.set(400);
+        this.InitGuns();
+    }
+
+    InitGuns(){
+        // setup all the weapons that this ship can use.
+        this.machineGun = this.game.add.weapon( GUNS[0].fireRate, GUNS[0].spriteName);
+        GUNS[0].weapon = this.machineGun;
+        this.lasers =  this.game.add.weapon(GUNS[1].fireRate, GUNS[1].spriteName);
+        GUNS[1].weapon = this.lasers;
+        this.torpedos =  this.game.add.weapon(GUNS[2].fireRate, GUNS[2].spriteName);
+        GUNS[2].weapon = this.torpedos;
+        
+    
+        this.gunfire = this.game.add.audio('gunShot',0.03);
+        this.guns = GUNS[0];
+        this.guns.weapon.fireLimit = 5;
+        
+        //lifecycle events
+        this.guns.weapon.onFireLimit.add(
+          () =>{
+            this.game.time.events.add(500,() =>{
+              this.guns.weapon.resetShots();
+            })
+          },this
+        )
+        // init code
+        this.guns.weapon.bulletInheritSpriteSpeed = true;
+        this.guns.weapon.bulletCollideWorldBounds
+        this.guns.weapon.bulletKillDistance = this.guns.bulletKillDistance;
+        this.guns.weapon.bulletSpeed = this.guns.bulletSpeed;
+        this.guns.weapon.bulletAngleVariance = this.guns.bulletAngleVariance;
     }
 
     /** Init weapon system */
     FireGuns(){
-        this.guns.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
-        this.guns.fireRate = this.weapon.fireRate;
-        this.guns.fireAngle = Phaser.Math.radToDeg(this.rotation); 
-        if(this.ammoPool > this.weapon.ammoCost || this.weapon.ammoCost === 0) {
-            this.ammoPool -= this.weapon.ammoCost;
-            this.guns.fire();
+        this.guns.weapon.fireFrom.setTo(this.instance.x,this.instance.y,1,1);  
+        this.guns.fireRate = this.guns.weapon.fireRate;
+        this.guns.weapon.fireAngle = Phaser.Math.radToDeg(this.rotation); 
+        if(this.ammoPool > this.guns.ammoCost || this.guns.ammoCost === 0) {
+            this.ammoPool -= this.guns.ammoCost;
+            this.guns.weapon.fire();
         }   
 
         if(!this.gunfire.isPlaying)
             this.gunfire.play();
-
-
     } 
 
     ChangeGuns(id: number){
-        this.weapon = GUNS.find(e => e.id === id);
+        this.guns = GUNS.find(e => e.id === id);
     }
 
 

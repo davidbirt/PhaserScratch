@@ -60,22 +60,6 @@ class SimpleGame {
     
     // setup the ship and its physics
     this.ship = new Ship(this.game);
-    this.ship.instance.scale.setTo(0.1, 0.1);
-    this.ship.gunfire = this.game.add.audio('gunShot',0.03);
-    this.ship.guns = this.game.add.weapon(500, 'bullet');
-    this.ship.guns.fireLimit = 5;
-    this.ship.guns.onFireLimit.add(
-      () =>{
-        this.game.time.events.add(500,() =>{
-          this.ship.guns.resetShots();
-        })
-      },this
-    )
-    this.ship.guns.bulletInheritSpriteSpeed = true;
-    this.ship.guns.bulletCollideWorldBounds = this.ship.weapon.bulletCollideWorldBounds;
-    this.ship.guns.bulletKillDistance = this.ship.weapon.bulletKillDistance;
-    this.ship.guns.bulletSpeed = this.ship.weapon.bulletSpeed;
-    this.ship.guns.bulletAngleVariance = this.ship.weapon.bulletAngleVariance;
     
     // setup user input
     this.key_left = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
@@ -113,10 +97,10 @@ class SimpleGame {
 
     // check boundary for the asteroids
     this.asteroids.list.forEachExists(this.ship.checkBoundary, this);
-    this.ship.guns.bullets.forEachExists(this.ship.checkBoundary, this);
+    this.ship.guns.weapon.bullets.forEachExists(this.ship.checkBoundary, this);
 
 
-    this.game.physics.arcade.overlap(this.ship.guns.bullets, this.asteroids.list, this.collide, null, this);
+    this.game.physics.arcade.overlap(this.ship.guns.weapon.bullets, this.asteroids.list, this.collide, null, this);
     if(!this.ship.invulnerable)this.game.physics.arcade.overlap(this.ship.instance, this.asteroids.list, this.collide, null, this);
   }
 

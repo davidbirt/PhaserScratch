@@ -1,6 +1,5 @@
 /// <reference path="../services/phaser.d.ts" />
-
-export class Gun {
+export class Gun{
     id: number;
     ammoCost: number;
     damage: number;
@@ -12,12 +11,12 @@ export class Gun {
     bulletKillDistance: number;
     bulletSpeed: number;
     bulletAngleVariance: number;
-    
+    weapon: Phaser.Weapon
 };
 
 export const GUNS: Gun[] = [
     {
-        id: 1,
+        id:1,
         ammoCost: 0,
         damage: 1,
         name: 'machineGun',
@@ -27,7 +26,9 @@ export const GUNS: Gun[] = [
         bulletCollideWorldBounds: false,
         bulletKillDistance: 2,
         bulletSpeed: 500,
-        bulletAngleVariance: 5
+        bulletAngleVariance: 5,
+        weapon:null
+       
     },
     {
         id: 2,
@@ -40,8 +41,8 @@ export const GUNS: Gun[] = [
         bulletCollideWorldBounds: false,
         bulletKillDistance: 4,
         bulletSpeed: 750,
-        bulletAngleVariance: 1
-
+        bulletAngleVariance: 1,
+        weapon:null
     },
     {
         id: 3,
@@ -54,7 +55,8 @@ export const GUNS: Gun[] = [
         bulletCollideWorldBounds: false,
         bulletKillDistance: 6,
         bulletSpeed: 1250,
-        bulletAngleVariance: 0
+        bulletAngleVariance: 0,
+        weapon: null
     }
 ]
 
